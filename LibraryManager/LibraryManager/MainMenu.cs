@@ -10,23 +10,21 @@ namespace LibraryManager
 {
     class MainMenu
     {
+        Login login=new Login();
         public void DisplayMainMenu() // just started 
         {
            
-                Console.Clear();
-                Login login = new Login();
+                Console.Clear();           
                 login.title();
-                
-                
         }
 
         public void AdminMenu()
         {
             try
-            { 
+            {               
                 Console.WriteLine("\nOption 1: View Book\nOption 2: Add Stock\nOption 3: My Book \nOption 4: Extent the Period" +
                     "\nOption 5: View Queue \nOption 6: Search \nOption 7: Sort \nOption 8: Delete User \nOption 9: Exit");
-                Console.Write("Choose a Option : ");
+                Console.Write("\nChoose a Option : ");
 
                 int choice = int.Parse(Console.ReadLine());
 
@@ -74,10 +72,10 @@ namespace LibraryManager
         public void LocalMenu()
         {
             try
-            {
+            {                
                 Console.WriteLine("\nOption 1: View Book\nOption 2: My Cart\nOption 3: Choose Book \nOption 4: Extent the Period" +
-                    "Option 5: Search \nOption 6: Sort \nOption 7: Exit");
-                Console.Write("Choose a Option : ");
+                    "\nOption 5: Search \nOption 6: Sort \nOption 7: Exit");
+                Console.Write("\nChoose a Option : ");
 
                 int choice = int.Parse(Console.ReadLine());
 

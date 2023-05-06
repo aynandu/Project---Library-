@@ -13,6 +13,7 @@ namespace LibraryManager
         private string projectName = "Library Manager (Ver: 1.0)";
         private string userName;
         private string password;
+
         public void title()
         {
             Console.SetCursorPosition(0, 5);
@@ -38,7 +39,7 @@ namespace LibraryManager
                     Console.Clear();
                     title();
                     Console.WriteLine("\nOption 1: Login\nOption 2: Signup\nOption 3: Guest\nOption 4: Exit");
-                    Console.Write("Choose a Option : ");
+                    Console.Write("\nChoose a Option : ");
 
                     int choice=int.Parse(Console.ReadLine());
                    
@@ -78,10 +79,12 @@ namespace LibraryManager
         {
             Console.Clear ();
             title();
+            UserValidation userValidation = new UserValidation();
             Console.Write("\nUser Name : ");
             userName=Console.ReadLine();
             Console.Write("\nPassword : ");
             password= Console.ReadLine();
+            userValidation.UsrValidation(userName, password);
         }
         private void SignUPPage()
         {
