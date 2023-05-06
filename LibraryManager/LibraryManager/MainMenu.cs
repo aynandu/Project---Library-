@@ -116,5 +116,40 @@ namespace LibraryManager
             }
             Console.ReadLine();
         }
+        public void GuestMenu()
+        {
+            try
+            {
+                Console.WriteLine("\nOption 1: View Book\nOption 2: Search \nOption 3: Sort \nOption 4: Exit");
+                Console.Write("Choose a Option : ");
+
+                int choice = int.Parse(Console.ReadLine());
+
+                switch (choice)
+                {
+                    case 1:
+
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+
+                        break;
+                    case 4:
+                        Console.WriteLine("Click Enter to Close.");
+                        break;
+                    default:
+                        Console.WriteLine("Please Choose the Correct Option.");
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Please Provide a Numeric Value.");
+                Console.WriteLine(ex.Message);
+            }
+            Console.ReadLine();
+        }
     }
 }
