@@ -25,6 +25,7 @@ namespace LibraryManager
                 else
                     Console.Write("=");
             }
+            Console.WriteLine("\n");
         }
 
         public void DisplayLoginMenu()
@@ -54,6 +55,8 @@ namespace LibraryManager
                                 counter = true;
                                 break;
                             case 3:
+                                MainMenu  Menu= new MainMenu();
+                                Menu.GuestMenu();
                                 counter = true;
                                 break;
                             case 4:

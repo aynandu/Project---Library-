@@ -31,7 +31,7 @@ namespace LibraryManager
                         Console.WriteLine($"\nHi , {user.Name} ({user.status})");
                         mainMenu.AdminMenu();
                     }
-                    else if (user.status == (status.LoggedIN = User.LoggedInStatus.local))
+                    if (user.status == (status.LoggedIN = User.LoggedInStatus.local))
                     {
                         Console.Clear();
                         login = new Login();
@@ -39,13 +39,15 @@ namespace LibraryManager
                         Console.WriteLine($"\nHi , {user.Name} ({user.status})");
                         mainMenu.LocalMenu();
                     }
-                    else
-                    {
-                        Console.WriteLine("Invalid User! Click Enter to Home.");
-                        Console.ReadLine();
-                        login = new Login();
-                        login.DisplayLoginMenu();
-                    }
+                  
+                }
+                else
+                {
+                    Console.WriteLine("Invalid User! Click Enter to Home.");
+                    Console.ReadLine();
+                    login = new Login();
+                    login.DisplayLoginMenu();
+                    
                 }
             }
             Console.ReadLine();
