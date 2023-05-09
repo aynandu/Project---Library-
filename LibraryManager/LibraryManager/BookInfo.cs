@@ -13,7 +13,7 @@ namespace LibraryManager
         {
                 
                      new Book{BookName="The Flash: Rebirth",AuthorName="Geoff Johns",Quantity=2,Status=Book.BookStatus.Available,About="The Flash is an American television series"},
-                     new Book{BookName="The Flash: The Return of Barry Allen",AuthorName="Mark Waid",Quantity=1,Status=Book.BookStatus.Available,About="The Flash is an American television series"},
+                     new Book{BookName="The Flash: The Return of Barry Allen",AuthorName="Mark Waid",Quantity=1,Status=Book.BookStatus.Available,About="1"},
                      new Book{BookName="The Flash: Born to Run",AuthorName="Mark Waid",Quantity=1,Status=Book.BookStatus.Available,About="The Flash is an American television series"},
                      new Book{BookName="The Flash: Terminal Velocity",AuthorName="Mark Waid",Quantity=3,Status=Book.BookStatus.Available,About="The Flash is an American television series"},
                      new Book{BookName="The Flash: Blitz",AuthorName=" Geoff Johns",Quantity=4,Status=Book.BookStatus.Available,About="The Flash is an American television series"},
