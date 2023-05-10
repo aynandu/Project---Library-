@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace LibraryManager
 {
@@ -11,32 +14,39 @@ namespace LibraryManager
         
         public void UsrValidation(string usrName, string pwd)
         {
-            UserInfo userInfo = new UserInfo();
-            User status = new User();
-            MainMenu mainMenu = new MainMenu();
+            
             Login login;
-            var userDetails = from user in userInfo.GetUserInfo()
-                              select user;
-
-            foreach (var user in userDetails)
-            {
-                if(user.Username== usrName && user.Password==pwd)
+            MainMenu mainMenu = new MainMenu();
+            string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string sqlQuery = "SELECT * FROM [user]";
+            SqlCommand command = new SqlCommand(sqlQuery, connection);
+            SqlDataReader reader = command.ExecuteReader();
+            User user=new User();
+            
+            while (reader.Read())
+            {               
+                user.Username = reader.GetString(3);
+                user.Password = reader.GetString(4);
+                user.Status = reader.GetString(5);
+                if (user.Username == usrName && user.Password == pwd)
                 {
 
-                    if (user.status == (status.LoggedIN = User.LoggedInStatus.admin))
+                    if (user.Status == "admin")
                     {
                         Console.Clear();
                         login = new Login();
                         login.title();
-                        Console.WriteLine($"\nHi , {user.Name} ({user.status})");
+                        Console.WriteLine($"\nHi , {reader.GetString(1)} ({reader.GetString(5)}\n)");
                         mainMenu.AdminMenu();
                     }
-                    if (user.status == (status.LoggedIN = User.LoggedInStatus.local))
+                    if (user.Status == "Local")
                     {
                         Console.Clear();
                         login = new Login();
                         login.title();
-                        Console.WriteLine($"\nHi , {user.Name} ({user.status})");
+                        Console.WriteLine($"\nHi , {reader.GetString(2)} ({reader.GetString(5)}\n)");
                         mainMenu.LocalMenu();
                     }
                   
@@ -53,5 +63,5 @@ namespace LibraryManager
             Console.ReadLine();
             
         }
-    }
+     }
 }

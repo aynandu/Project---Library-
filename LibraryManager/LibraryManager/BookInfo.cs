@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,23 +21,23 @@ namespace LibraryManager
         };
         public void DisplayBookInfo()
         {
-            
-            var bookDetails = from buk in bookinfo
-                              orderby buk.Quantity descending
-                              select buk;
-
             Console.Clear();
             login.title();
-            int i = 1;
-            foreach (var buk in bookDetails)
-            {              
-                Console.WriteLine
-                    (
-                        $"Option {i} : {buk.BookName} by {buk.AuthorName} -  Left : {buk.Quantity} , Status: {buk.Status}"
-                    );
-                i++;
+            Console.WriteLine("Books :\n");
+            string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string query = "SELECT * FROM [Book]";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Console.WriteLine($"|Book ID: {reader.GetInt32(0)}| |Book Name: {reader.GetString(1)} |Author Name: {reader.GetString(2)} |Quantity: {reader.GetInt32(4)} |Status:{reader.GetString(5)}\n ");
             }
+            connection.Close();
+            Console.WriteLine("\nClick Enter to Main Menu");
             Console.ReadLine();
+
         }
        
       }

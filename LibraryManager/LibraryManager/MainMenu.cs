@@ -23,7 +23,7 @@ namespace LibraryManager
             try
             {               
                 Console.WriteLine("Option 1: View Book\nOption 2: Add Stock\nOption 3: My Book \nOption 4: Extent the Period" +
-                    "\nOption 5: View Queue \nOption 6: Search \nOption 7: Sort \nOption 8: Delete User \nOption 9: Exit");
+                    "\nOption 5: View Queue \nOption 6: Search \nOption 7: Sort \nOption 8: View User \nOption 9: Delete User \nOption 10: Exit");
                 Console.Write("\nChoose a Option : ");
 
                 int choice = int.Parse(Console.ReadLine());
@@ -53,9 +53,13 @@ namespace LibraryManager
 
                         break;
                     case 8:
-
+                        UserInfo userInfo = new UserInfo();
+                        userInfo.UserDetails();
                         break;
                     case 9:
+
+                        break;
+                    case 10:
                         Console.WriteLine("Click Enter to Close.");
                         break;
                     default:
