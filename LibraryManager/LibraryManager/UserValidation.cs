@@ -11,7 +11,7 @@ namespace LibraryManager
 {
      class UserValidation
     {
-        
+        public  int iD;
         public void UsrValidation(string usrName, string pwd)
         {
             
@@ -25,13 +25,17 @@ namespace LibraryManager
             SqlDataReader reader = command.ExecuteReader();
             User user=new User();
             
-            while (reader.Read())
-            {               
+            bool inContent = true;
+            while (inContent)
+            {
+                reader.Read();
                 user.Username = reader.GetString(3);
                 user.Password = reader.GetString(4);
                 user.Status = reader.GetString(5);
+                
                 if (user.Username == usrName && user.Password == pwd)
                 {
+                    iD = reader.GetInt32(0);
 
                     if (user.Status == "admin")
                     {
@@ -39,29 +43,29 @@ namespace LibraryManager
                         login = new Login();
                         login.title();
                         Console.WriteLine($"\nHi , {reader.GetString(1)} ({reader.GetString(5)}\n)");
-                        mainMenu.AdminMenu();
+                        mainMenu.AdminMenu(iD);
+                        inContent = false;
                     }
                     if (user.Status == "Local")
                     {
                         Console.Clear();
                         login = new Login();
                         login.title();
-                        Console.WriteLine($"\nHi , {reader.GetString(2)} ({reader.GetString(5)}\n)");
-                        mainMenu.LocalMenu();
+                        Console.WriteLine($"\nHi , {reader.GetString(1)} ({reader.GetString(5)}\n)");
+                         mainMenu.LocalMenu(iD);
+                        inContent = false;
                     }
                   
                 }
-                else
-                {
-                    Console.WriteLine("Invalid User! Click Enter to Home.");
-                    Console.ReadLine();
-                    login = new Login();
-                    login.DisplayLoginMenu();
-                    
-                }
+               
+                
             }
+            Console.WriteLine("Invalid User! Click Enter to Home.");
             Console.ReadLine();
+            login = new Login();
+            login.DisplayLoginMenu();
             
         }
+        
      }
 }

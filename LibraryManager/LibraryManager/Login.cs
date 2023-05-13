@@ -11,8 +11,8 @@ namespace LibraryManager
 
     {
         private string projectName = "Library Manager (Ver: 1.0)";
-        private string userName;
-        private string password;
+        public string userName;
+        public string password;
 
         public void title()
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +11,7 @@ namespace LibraryManager
 {
     class MainMenu
     {
+        BookInfo bookInfo = new BookInfo();
         Login login=new Login();
         public void DisplayMainMenu() // just started 
         {
@@ -18,10 +20,11 @@ namespace LibraryManager
                 login.title();
         }
 
-        public void AdminMenu()
+        public void AdminMenu(int userId)
         {
             try
-            {               
+            {
+                
                 Console.WriteLine("Option 1: View Book\nOption 2: Add Stock\nOption 3: My Book \nOption 4: Extent the Period" +
                     "\nOption 5: View Queue \nOption 6: Search \nOption 7: Sort \nOption 8: View User \nOption 9: Delete User \nOption 10: Exit");
                 Console.Write("\nChoose a Option : ");
@@ -31,11 +34,11 @@ namespace LibraryManager
                 switch (choice)
                 {
                     case 1:
-                        BookInfo bookInfo = new BookInfo();
-                        bookInfo.DisplayBookInfo();
+                        
+                        bookInfo.DisplayBookInfo( userId);
                         break;
                     case 2:
-                        
+                        bookInfo.UpdateBookInfo();
                         break;
                     case 3:
                         
@@ -74,7 +77,7 @@ namespace LibraryManager
             }
             Console.ReadLine();
         }
-        public void LocalMenu()
+        public void LocalMenu(int userId)
         {
             try
             {                
@@ -87,8 +90,8 @@ namespace LibraryManager
                 switch (choice)
                 {
                     case 1:
-                        BookInfo bookInfo = new BookInfo();
-                        bookInfo.DisplayBookInfo();
+
+                        bookInfo.DisplayBookInfo(userId);
                         break;
                     case 2:
 
@@ -135,8 +138,21 @@ namespace LibraryManager
                 switch (choice)
                 {
                     case 1:
-                        BookInfo bookInfo = new BookInfo();
-                        bookInfo.DisplayBookInfo();
+                        Console.Clear();
+                        login.title();
+                        Console.WriteLine("Books :\n");
+                        string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
+                        SqlConnection connection = new SqlConnection(connectionString);
+                        connection.Open();
+                        string query = "SELECT * FROM [Book]";
+                        SqlCommand cmd = new SqlCommand(query, connection);
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"|Book ID: {reader.GetInt32(0)}| |Book Name: {reader.GetString(1)} |Author Name: {reader.GetString(2)} |Quantity: {reader.GetInt32(4)} |Status:{reader.GetString(5)}\n ");
+                        }
+                        Console.Write("\nChoose Book using Book ID:");
+                        connection.Close();
                         break;
                     case 2:
 
