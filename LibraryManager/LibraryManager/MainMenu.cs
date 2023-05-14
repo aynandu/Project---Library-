@@ -25,7 +25,7 @@ namespace LibraryManager
             try
             {
                 
-                Console.WriteLine("Option 1: View Book\nOption 2: Add Stock\nOption 3: My Book \nOption 4: Extent the Period" +
+                Console.WriteLine("Option 1: View Book\nOption 2: Add Stock\nOption 3: My Cart \nOption 4: Extent the Period" +
                     "\nOption 5: View Queue \nOption 6: Search \nOption 7: Sort \nOption 8: View User \nOption 9: Delete User \nOption 10: Exit");
                 Console.Write("\nChoose a Option : ");
 
@@ -35,13 +35,13 @@ namespace LibraryManager
                 {
                     case 1:
                         
-                        bookInfo.DisplayBookInfo( userId);
+                        bookInfo.DisplayBookInfo(userId);
                         break;
                     case 2:
-                        bookInfo.UpdateBookInfo();
+                        bookInfo.AddToStock();
                         break;
                     case 3:
-                        
+                        bookInfo.MyCart(userId);
                         break;
                     case 4:
 
@@ -81,8 +81,8 @@ namespace LibraryManager
         {
             try
             {                
-                Console.WriteLine("Option 1: View Book\nOption 2: My Cart\nOption 3: Choose Book \nOption 4: Extent the Period" +
-                    "\nOption 5: Search \nOption 6: Sort \nOption 7: Exit");
+                Console.WriteLine("Option 1: View Book\nOption 2: My Cart\nOption 3: Extent the Period" +
+                    "\nOption 4: Search \nOption 5: Sort \nOption 6: Exit");
                 Console.Write("\nChoose a Option : ");
 
                 int choice = int.Parse(Console.ReadLine());
@@ -94,7 +94,7 @@ namespace LibraryManager
                         bookInfo.DisplayBookInfo(userId);
                         break;
                     case 2:
-
+                        bookInfo.MyCart(userId);
                         break;
                     case 3:
 
@@ -106,9 +106,6 @@ namespace LibraryManager
 
                         break;
                     case 6:
-
-                        break;
-                    case 7:
                         Console.WriteLine("Click Enter to Close.");
                         break;
                     default:

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
@@ -43,6 +44,7 @@ namespace LibraryManager
             string query = "SELECT * FROM [Book]";
             SqlCommand cmd = new SqlCommand(query, connection);
             SqlDataReader reader = cmd.ExecuteReader();
+            int inSearchCount = 0;
             bool inSearch = true;
             try
             {
@@ -69,14 +71,22 @@ namespace LibraryManager
                                 command2.ExecuteNonQuery();
 
                                 Console.WriteLine("Congrats, Book Added to Your Cart\n Click Enter Main Menu\n");
-                            
+                                inSearchCount = 1;
                                 inSearch = false;
                                 //userValidation.UsrValidation(login.userName, login.password);
 
                             }
                             else
                             {
-                                Console.WriteLine("Sorry Book is Not Available.\n Click Enter Main Menu\n");
+                                if (reader.GetInt32(6) != 1)
+                                {
+                                reader.Close();
+                                string sqlquery = "UPDATE Book SET Queue =1,QueueUser="+userId+ " WHERE BookId = " + book.BookID + "";
+                                SqlCommand command = new SqlCommand(sqlquery, connection);
+                                command.ExecuteNonQuery();
+                                }                                
+                                Console.WriteLine("Sorry Book is Not Available.Added to Queue. \n Click Enter Main Menu\n");
+                                inSearchCount = 1;
                                 Console.ReadLine();
                                 //userValidation.UsrValidation(login.userName, login.password);
 
@@ -91,14 +101,48 @@ namespace LibraryManager
                 Console.WriteLine(ex.Message);
             }
             connection.Close();
-            Console.WriteLine("Book Not Found");
-            Console.WriteLine("Try Again\n Click Enter Main Menu\n");
+            if (inSearchCount == 0) 
+            {
+                Console.WriteLine("Book Not Found");
+                Console.WriteLine("Try Again\n Click Enter Main Menu\n");
+            }
+            
             Console.ReadLine();
             userValidation.UsrValidation(login.userName, login.password);
 
 
         }
-        public void UpdateBookInfo()
+        public void MyCart(int userId)
+        {
+            Console.Clear();
+            login.title();
+            Console.WriteLine("My Books:\n");
+            string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string query ="SELECT br.BookID,b.BookName,br.[Date of Rent],br.userID FROM  BookRent br JOIN [user] u ON u.UserID=br.userID JOIN Book b ON br.BookID=b.BookId WHERE br.userID=" + userId + "";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            SqlDataReader reader = cmd.ExecuteReader();
+            int inMyCart = 0;
+            while (reader.Read())
+            {                
+                if (reader.GetInt32(3)!=null)
+                {
+                    Console.WriteLine($"|Book ID: {reader.GetInt32(0)}| |Book Name: {reader.GetString(1)} |Author Name: {reader.GetDateTime(2)} |UserID: {reader.GetInt32(3)} |\n ");
+                    inMyCart = 1;
+                }               
+                
+            }
+            if (inMyCart == 0)
+            {
+                Console.WriteLine("Your Cart Is Empty, Go to View Books to Add Books to Cart.");
+            }
+            Console.Write("\n..");
+            connection.Close();
+
+        }
+
+        public void AddToStock()
         {
             Console.Clear();
             login.title();
