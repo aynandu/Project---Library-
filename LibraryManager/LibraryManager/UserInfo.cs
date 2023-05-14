@@ -10,12 +10,12 @@ namespace LibraryManager
      class UserInfo
     {
         Login login = new Login();
+        User user = new User();
 
-        
         public void AddNewuser()
         {
             
-            User user = new User();
+            
             Console.Clear();
             login.title();
             Console.WriteLine("Signup  ");
@@ -72,11 +72,81 @@ namespace LibraryManager
 
             //6.Connection closed
             connection.Close();
-            Console.WriteLine("\nPlease Click enter to Main Menu");
-            Console.ReadLine();
-            MainMenu menu = new MainMenu();
+                                 
+        }
+        public void DeleteUser()
+        {
+            Console.Clear();
+            login.title();
+            UserDetails();
+            string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
+
+            SqlConnection connection = new SqlConnection( connectionString);
+            connection.Open();
+            string sqlQuery = "SELECT * FROM [user]";
+            SqlCommand command = new SqlCommand( sqlQuery, connection);
+            SqlDataReader reader = command.ExecuteReader();
+           
+            bool isDeleteUserCount = true;
+            bool innerCount = true;
+            int noUser = 0;
+            while (isDeleteUserCount)
+            {
+                
+                try
+                {
+                    Console.Write("\n Choose UserID:  ");
+                    int deleteUserId = int.Parse(Console.ReadLine());
+                    
+                    while (innerCount)
+                    {
+                        reader.Read();
+                        user.UserID = reader.GetInt32(0);
+                        if (deleteUserId == user.UserID)
+                        {
+                            reader.Close();
+                            string query = "DELETE  FROM [user] WHERE UserID = " + deleteUserId + " ";
+                            SqlCommand sqlCommand = new SqlCommand( query, connection );
+                            sqlCommand.ExecuteNonQuery();
+                            Console.WriteLine($"User with UserID {deleteUserId} Succesfully Deleted.");
+                            noUser = 1;
+                            isDeleteUserCount = false;
+                            break;
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Choose a numeric Value ");
+                    Console.WriteLine(ex.Message);
+                }
+
+            }
+            reader.Close();
+            connection.Close();
+            if (noUser == 0)
+            {
+                Console.WriteLine("User Not Found");
+            }
             
-            
+        }
+        public void ViewQueue()
+        {
+            Console.Clear();
+            login.title();
+            Console.WriteLine("Books :\n");
+            string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string query = "SELECT * FROM [Book] WHERE Queue=1";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Console.WriteLine($"|Book ID: {reader.GetInt32(0)}| |Book Name: {reader.GetString(1)}|Status:{reader.GetString(5)} |User In Queue: {reader.GetInt32(7)}\n ");
+            }
+            connection.Close();
         }
     }
 }

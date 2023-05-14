@@ -12,6 +12,7 @@ namespace LibraryManager
     class MainMenu
     {
         BookInfo bookInfo = new BookInfo();
+        UserInfo userInfo = new UserInfo();
         Login login=new Login();
         public void DisplayMainMenu() // just started 
         {
@@ -47,7 +48,7 @@ namespace LibraryManager
 
                         break;
                     case 5:
-
+                        userInfo.ViewQueue();
                         break;
                     case 6:
 
@@ -56,11 +57,13 @@ namespace LibraryManager
 
                         break;
                     case 8:
-                        UserInfo userInfo = new UserInfo();
+                        
                         userInfo.UserDetails();
+                        Console.WriteLine("\nPlease Click enter to Main Menu");
+                        Console.ReadLine();
                         break;
                     case 9:
-
+                        userInfo.DeleteUser();
                         break;
                     case 10:
                         Console.WriteLine("Click Enter to Close.");
