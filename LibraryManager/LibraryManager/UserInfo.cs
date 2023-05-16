@@ -38,11 +38,7 @@ namespace LibraryManager
             SqlCommand cmd = new SqlCommand(sql, connection);
             cmd.ExecuteNonQuery();
             //6.Connection closed
-            connection.Close();
-            Console.WriteLine("Signup Completed,Please Click enter to Login");
-            Console.ReadLine();
-            login.DisplayLoginMenu();
-
+            connection.Close();          
         }
 
         public void UserDetails()
@@ -64,7 +60,7 @@ namespace LibraryManager
             {
                 Console.WriteLine("UserID: {0}, Name: {1}, Status: {2}", reader.GetInt32(0), reader.GetString(1), reader.GetString(5));
             }
-           // reader.Close();
+          reader.Close();
 
             //6.Connection closed
             connection.Close();

@@ -44,11 +44,11 @@ namespace LibraryManager
             SqlCommand cmd = new SqlCommand(query, connection);
             SqlDataReader reader = cmd.ExecuteReader();
             int inSearchCount = 0;
-            bool inSearch = true;
-            try
+            bool inSearch = true;           
+            book.BookID = int.Parse(Console.ReadLine());
+            while (inSearch)
             {
-                book.BookID = int.Parse(Console.ReadLine());
-                while (inSearch)
+                try
                 {
                     reader.Read();
 
@@ -72,7 +72,6 @@ namespace LibraryManager
                             Console.WriteLine("Congrats, Book Added to Your Cart\n Click Enter Main Menu\n");
                             inSearchCount = 1;
                             inSearch = false;
-                            //userValidation.UsrValidation(login.userName, login.password);
 
                         }
                         else
@@ -87,29 +86,23 @@ namespace LibraryManager
                             Console.WriteLine("Sorry Book is Not Available.Added to Queue. \n Click Enter Main Menu\n");
                             inSearchCount = 1;
                             Console.ReadLine();
-                            //userValidation.UsrValidation(login.userName, login.password);
-
                         }
 
                     }
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Please Provide a Numeric Value.");
+                    Console.WriteLine(ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Please Provide a Numeric Value.");
-                Console.WriteLine(ex.Message);
-            }
+            
             connection.Close();
             if (inSearchCount == 0)
             {
                 Console.WriteLine("Book Not Found");
                 Console.WriteLine("Try Again\n Click Enter Main Menu\n");
             }
-
-            Console.ReadLine();
-            userValidation.UsrValidation(login.userName, login.password);
-
-
         }
         public void MyCart(int userId)
         {
@@ -178,8 +171,7 @@ namespace LibraryManager
             while (reader.Read())
             {
                 Console.WriteLine($"|Book ID: {reader.GetInt32(0)}| |Book Name: {reader.GetString(1)} |Author Name: {reader.GetString(2)} |Quantity: {reader.GetInt32(4)} |Status:{reader.GetString(5)}\n ");
-            }
-            Console.Write("\nChoose Book using Book ID:");
+            }           
             connection.Close();
             AddToCart(userId);
         }
@@ -238,9 +230,7 @@ namespace LibraryManager
                     Console.Clear();
                     login.title();
                     StockAutomation();
-                    MyCart(userId);
-                    
-                
+                    MyCart(userId);                                  
                         Console.Write("\nExtend Your Book By Choose by BookID :");
                         book.BookID = int.Parse(Console.ReadLine());
 

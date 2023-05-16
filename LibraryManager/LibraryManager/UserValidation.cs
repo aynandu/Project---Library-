@@ -24,7 +24,7 @@ namespace LibraryManager
             SqlCommand command = new SqlCommand(sqlQuery, connection);
             SqlDataReader reader = command.ExecuteReader();
             User user=new User();
-            
+            int flag = 0;
             bool inContent = true;
             while (inContent)
             {
@@ -42,28 +42,30 @@ namespace LibraryManager
                         Console.Clear();
                         login = new Login();
                         login.title();
-                        Console.WriteLine($"\nHi , {reader.GetString(1)} ({reader.GetString(5)}\n)");
+                        Console.WriteLine($"\nHi {reader.GetString(1)}, {reader.GetString(5)}\n");
                         mainMenu.AdminMenu(iD);
                         inContent = false;
+                        flag = 1;
                     }
                     if (user.Status == "Local")
                     {
                         Console.Clear();
                         login = new Login();
                         login.title();
-                        Console.WriteLine($"\nHi , {reader.GetString(1)} ({reader.GetString(5)}\n)");
+                        Console.WriteLine($"\nHi {reader.GetString(1)}, {reader.GetString(5)}\n");
                          mainMenu.LocalMenu(iD);
                         inContent = false;
+                        flag = 1;
                     }
                   
-                }
-               
-                
+                }                            
             }
-            Console.WriteLine("Invalid User! Click Enter to Home.");
-            Console.ReadLine();
-            login = new Login();
-            login.DisplayLoginMenu();
+            reader.Close();
+            if(flag == 0) {
+                Console.WriteLine("Invalid User! Click Enter to Home.");
+                Console.ReadLine();
+            }
+           
             
         }
         

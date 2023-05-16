@@ -31,11 +31,10 @@ namespace LibraryManager
         public void DisplayLoginMenu()
         {
             bool counter = true;
-            
-          try 
+            while (counter)
             {
-                
-                while (counter) 
+
+                try
                 {
                     Console.Clear();
                     title();
@@ -65,16 +64,18 @@ namespace LibraryManager
                                 break;
                             default: 
                                 Console.WriteLine("Please Choose the Correct Option.");
+                                Console.ReadLine();
                                 counter = true;
                                 break;
                     }
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Please Provide a Numeric Value."+ex.Message);       
+                    Console.ReadLine();
+                }
             }
-          catch (Exception ex) 
-            {
-                Console.WriteLine("Please Provide a Numeric Value.");
-                Console.WriteLine(ex.Message); 
-            }
+          
             Console.ReadLine();
         }
 

@@ -98,7 +98,7 @@ namespace LibraryManager
             try
             {                
                 Console.WriteLine("Option 1: View Book\nOption 2: My Cart\nOption 3: Extent the Period" +
-                    "\nOption 4:  Sort \nOption 5: Exit");
+                    "\nOption 4: Sort \nOption 5: Exit");
                 Console.Write("\nChoose a Option : ");
 
                 int choice = int.Parse(Console.ReadLine());
