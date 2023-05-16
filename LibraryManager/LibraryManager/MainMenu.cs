@@ -27,7 +27,7 @@ namespace LibraryManager
             {
                 
                 Console.WriteLine("Option 1: View Book\nOption 2: Add Stock\nOption 3: My Cart \nOption 4: Extent the Period" +
-                    "\nOption 5: View Queue \nOption 6: Search \nOption 7: Sort \nOption 8: View User \nOption 9: Delete User \nOption 10: Exit");
+                    "\nOption 5: View Queue \nOption 6: Sort \nOption 7: View User \nOption 8: Delete User \nOption 9: Exit");
                 Console.Write("\nChoose a Option : ");
 
                 int choice = int.Parse(Console.ReadLine());
@@ -35,37 +35,50 @@ namespace LibraryManager
                 switch (choice)
                 {
                     case 1:
-                        
+                        Console.Clear();
+                        login.title();
                         bookInfo.DisplayBookInfo(userId);
                         break;
                     case 2:
+                        Console.Clear();
+                        login.title();
                         bookInfo.AddToStock();
                         break;
                     case 3:
+                        Console.Clear();
+                        login.title();
                         bookInfo.MyCart(userId);
                         break;
                     case 4:
-
+                        Console.Clear();
+                        login.title();
+                        bookInfo.ExtendBookPeriod(userId);
                         break;
                     case 5:
+                        Console.Clear();
+                        login.title();
                         userInfo.ViewQueue();
                         break;
                     case 6:
+                        Console.Clear();
+                        login.title();
+                        bookInfo.SortBook(userId);
 
                         break;
                     case 7:
-
-                        break;
-                    case 8:
-                        
+                        Console.Clear();
+                        login.title();
                         userInfo.UserDetails();
                         Console.WriteLine("\nPlease Click enter to Main Menu");
                         Console.ReadLine();
                         break;
-                    case 9:
+                    case 8:
+                        Console.Clear();
+                        login.title();
                         userInfo.DeleteUser();
                         break;
-                    case 10:
+                    case 9:
+                       
                         Console.WriteLine("Click Enter to Close.");
                         break;
                     default:
@@ -85,7 +98,7 @@ namespace LibraryManager
             try
             {                
                 Console.WriteLine("Option 1: View Book\nOption 2: My Cart\nOption 3: Extent the Period" +
-                    "\nOption 4: Search \nOption 5: Sort \nOption 6: Exit");
+                    "\nOption 4:  Sort \nOption 5: Exit");
                 Console.Write("\nChoose a Option : ");
 
                 int choice = int.Parse(Console.ReadLine());
@@ -93,25 +106,32 @@ namespace LibraryManager
                 switch (choice)
                 {
                     case 1:
-
+                        Console.Clear();
+                        login.title();
                         bookInfo.DisplayBookInfo(userId);
                         break;
                     case 2:
+                        Console.Clear();
+                        login.title();
                         bookInfo.MyCart(userId);
                         break;
                     case 3:
-
+                        Console.Clear();
+                        login.title();
+                        bookInfo.ExtendBookPeriod(userId);
                         break;
                     case 4:
-
+                        Console.Clear();
+                        login.title();
+                        bookInfo.SortBook(userId);                        
                         break;
                     case 5:
-
-                        break;
-                    case 6:
+                        
                         Console.WriteLine("Click Enter to Close.");
                         break;
                     default:
+                        Console.Clear();
+                        login.title();
                         Console.WriteLine("Please Choose the Correct Option.");
                         break;
                 }
@@ -130,7 +150,7 @@ namespace LibraryManager
                 Console.Clear();
               
                 login.title();
-                Console.WriteLine("Option 1: View Book\nOption 2: Search \nOption 3: Sort \nOption 4: Back to Main Menu");
+                Console.WriteLine("Option 1: View Book\nOption 2: Exit");
                 Console.Write("\nChoose a Option : ");
 
                 int choice = int.Parse(Console.ReadLine());
@@ -155,13 +175,7 @@ namespace LibraryManager
                         connection.Close();
                         break;
                     case 2:
-
-                        break;
-                    case 3:
-
-                        break;
-                    case 4:
-                        Console.WriteLine("Click Enter to Back.");
+                        Console.WriteLine("Click Enter to Close.");
                         break;
                     default:
                         Console.WriteLine("Please Choose the Correct Option.");

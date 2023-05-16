@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace LibraryManager
 {
-     class BookInfo
+    class BookInfo
     {
         private int DBBookID { get; set; }
-        Login login =new Login();
-        
+        Login login = new Login();
+        Book book = new Book();
+        User user = new User();
         public void DisplayBookInfo(int userId)
         {
-            Console.Clear();
-            login.title();
+
             Console.WriteLine("Books :\n");
             string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
             SqlConnection connection = new SqlConnection(connectionString);
@@ -29,7 +29,6 @@ namespace LibraryManager
             {
                 Console.WriteLine($"|Book ID: {reader.GetInt32(0)}| |Book Name: {reader.GetString(1)} |Author Name: {reader.GetString(2)} |Quantity: {reader.GetInt32(4)} |Status:{reader.GetString(5)}\n ");
             }
-            Console.Write("\nChoose Book using Book ID:");
             connection.Close();
             AddToCart(userId);
         }
@@ -40,7 +39,7 @@ namespace LibraryManager
             connection.Open();
             Console.Write("\nChoose Book using Book ID:");
             UserValidation userValidation = new UserValidation();
-            Book book = new Book();
+
             string query = "SELECT * FROM [Book]";
             SqlCommand cmd = new SqlCommand(query, connection);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -52,61 +51,61 @@ namespace LibraryManager
                 while (inSearch)
                 {
                     reader.Read();
-                    
-                        DBBookID = reader.GetInt32(0);
-                    
-                        if (book.BookID == DBBookID)
+
+                    DBBookID = reader.GetInt32(0);
+
+                    if (book.BookID == DBBookID)
+                    {
+                        if (reader.GetString(5) == "AVAILABLE")
                         {
-                            if (reader.GetString(5) == "AVAILABLE")
-                            {                        
-                                reader.Close();
+                            reader.Close();
 
-                                string sqlquery = "UPDATE Book SET Quantity -=1 WHERE BookId = "+ book.BookID +"";
-                                SqlCommand command = new SqlCommand(sqlquery, connection);
-                           
-                                string sqlquery2 = "INSERT INTO [BookRent] (userID,BookID) VALUES (" + userId + "," + book.BookID + ")";
-                                SqlCommand command2 = new SqlCommand(sqlquery2, connection);
+                            string sqlquery = "UPDATE Book SET Quantity -=1 WHERE BookId = " + book.BookID + "";
+                            SqlCommand command = new SqlCommand(sqlquery, connection);
 
-                                command.ExecuteNonQuery();
-                                command2.ExecuteNonQuery();
+                            string sqlquery2 = "INSERT INTO [BookRent] (userID,BookID) VALUES (" + userId + "," + book.BookID + ")";
+                            SqlCommand command2 = new SqlCommand(sqlquery2, connection);
 
-                                Console.WriteLine("Congrats, Book Added to Your Cart\n Click Enter Main Menu\n");
-                                inSearchCount = 1;
-                                inSearch = false;
-                                //userValidation.UsrValidation(login.userName, login.password);
+                            command.ExecuteNonQuery();
+                            command2.ExecuteNonQuery();
 
-                            }
-                            else
-                            {
-                                if (reader.GetInt32(6) != 1)
-                                {
-                                reader.Close();
-                                string sqlquery = "UPDATE Book SET Queue =1,QueueUser="+userId+ " WHERE BookId = " + book.BookID + "";
-                                SqlCommand command = new SqlCommand(sqlquery, connection);
-                                command.ExecuteNonQuery();
-                                }                                
-                                Console.WriteLine("Sorry Book is Not Available.Added to Queue. \n Click Enter Main Menu\n");
-                                inSearchCount = 1;
-                                Console.ReadLine();
-                                //userValidation.UsrValidation(login.userName, login.password);
+                            Console.WriteLine("Congrats, Book Added to Your Cart\n Click Enter Main Menu\n");
+                            inSearchCount = 1;
+                            inSearch = false;
+                            //userValidation.UsrValidation(login.userName, login.password);
 
-                            }
-                      
                         }
+                        else
+                        {
+                            if (reader.GetInt32(6) != 1)
+                            {
+                                reader.Close();
+                                string sqlquery = "UPDATE Book SET Queue =1,QueueUser=" + userId + " WHERE BookId = " + book.BookID + "";
+                                SqlCommand command = new SqlCommand(sqlquery, connection);
+                                command.ExecuteNonQuery();
+                            }
+                            Console.WriteLine("Sorry Book is Not Available.Added to Queue. \n Click Enter Main Menu\n");
+                            inSearchCount = 1;
+                            Console.ReadLine();
+                            //userValidation.UsrValidation(login.userName, login.password);
+
+                        }
+
+                    }
                 }
             }
             catch (Exception ex)
-                    {
+            {
                 Console.WriteLine("Please Provide a Numeric Value.");
                 Console.WriteLine(ex.Message);
             }
             connection.Close();
-            if (inSearchCount == 0) 
+            if (inSearchCount == 0)
             {
                 Console.WriteLine("Book Not Found");
                 Console.WriteLine("Try Again\n Click Enter Main Menu\n");
             }
-            
+
             Console.ReadLine();
             userValidation.UsrValidation(login.userName, login.password);
 
@@ -114,38 +113,36 @@ namespace LibraryManager
         }
         public void MyCart(int userId)
         {
-            Console.Clear();
-            login.title();
+
             Console.WriteLine("My Books:\n");
             string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            string query ="SELECT br.BookID,b.BookName,br.[Date of Rent],br.userID FROM  BookRent br JOIN [user] u ON u.UserID=br.userID JOIN Book b ON br.BookID=b.BookId WHERE br.userID=" + userId + "";
+            string query = "SELECT br.BookID,b.BookName,br.[DateofRent],br.userID FROM  BookRent br JOIN [user] u ON u.UserID=br.userID JOIN Book b ON br.BookID=b.BookId WHERE br.userID=" + userId + "";
             SqlCommand cmd = new SqlCommand(query, connection);
             SqlDataReader reader = cmd.ExecuteReader();
             int inMyCart = 0;
             while (reader.Read())
-            {                
-                if (reader.GetInt32(3)!=null)
+            {
+                if (reader.GetInt32(3) != null)
                 {
-                    Console.WriteLine($"|Book ID: {reader.GetInt32(0)}| |Book Name: {reader.GetString(1)} |Author Name: {reader.GetDateTime(2)} |UserID: {reader.GetInt32(3)} |\n ");
+                    Console.WriteLine($"|Book ID: {reader.GetInt32(0)}| |Book Name: {reader.GetString(1)} |Date Of Rent: {reader.GetDateTime(2)} |UserID: {reader.GetInt32(3)} |\n ");
                     inMyCart = 1;
-                }               
-                
+                }
+
             }
             if (inMyCart == 0)
             {
                 Console.WriteLine("Your Cart Is Empty, Go to View Books to Add Books to Cart.");
             }
-            Console.Write("\n..");
+            Console.Write("\n");
             connection.Close();
 
         }
 
         public void AddToStock()
         {
-            Console.Clear();
-            login.title();
+
             Book book = new Book();
             Console.WriteLine("Add Stock\n");
             Console.Write("\nEnter Book Name : ");
@@ -162,12 +159,109 @@ namespace LibraryManager
             string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            string sqlquery = "INSERT INTO [Book] (BookName,AuthorName,About,Quantity) VALUES ('" +book.BookName+ "','" +book.AuthorName+ "','" +book.About+ "','" +book.Quantity+ "')";
+            string sqlquery = "INSERT INTO [Book] (BookName,AuthorName,About,Quantity) VALUES ('" + book.BookName + "','" + book.AuthorName + "','" + book.About + "','" + book.Quantity + "')";
             SqlCommand command = new SqlCommand(sqlquery, connection);
             command.ExecuteNonQuery();
             Console.WriteLine("Stock Add,Please Click enter to Login");
             Console.ReadLine();
         }
-       
-      }
+        public void SortBook(int userId)
+        {
+
+            Console.WriteLine("Sort Books by Available :\n");
+            string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string query = "SELECT * FROM [Book] WHERE Status ='AVAILABLE'";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Console.WriteLine($"|Book ID: {reader.GetInt32(0)}| |Book Name: {reader.GetString(1)} |Author Name: {reader.GetString(2)} |Quantity: {reader.GetInt32(4)} |Status:{reader.GetString(5)}\n ");
+            }
+            Console.Write("\nChoose Book using Book ID:");
+            connection.Close();
+            AddToCart(userId);
+        }
+        public void StockAutomation()
+        {
+            string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string query = "SELECT br.BookID ,br.userID,bk.Queue FROM BookRent br JOIN Book bk ON  br.BookID=bk.BookId WHERE br.DueDate=CAST(GETDATE() as DATE);";
+            SqlCommand cmd = new SqlCommand(query, connection);
+            SqlDataReader reader = cmd.ExecuteReader();
+            bool isStockatmCount = true;
+
+            while (isStockatmCount)
+            {
+                try
+                {
+                    reader.Read();
+                    book.BookID = reader.GetInt32(0);
+                    user.UserID = reader.GetInt32(1);
+                    int Queue = reader.GetInt32(2);
+                    if (Queue == 1)
+                    {
+
+                        reader.Close();
+                        string Query2 = "INSERT INTO BookRent(BookID,userID) VALUE(" + book.BookID + ",(SELECT QueueUser  FROM Book WHERE Queue =1));DELETE  FROM BookRent WHERE userID=" + user.UserID + "  AND BookID = " + book.BookID + ";UPDATE Book SET Queue=0,QueueUser=Null Where BookId =" + book.BookID + " ;";
+                        SqlCommand command2 = new SqlCommand(Query2, connection);
+                        command2.ExecuteNonQuery();
+                    }
+                    if (Queue == 0)
+                    {
+
+                        reader.Close();
+                        string Query2 = "DELETE  FROM BookRent WHERE userID=" + user.UserID + "  AND BookID = " + book.BookID + ";UPDATE Book SET Quantity+=1 Where BookId =" + book.BookID + " ;";
+                        SqlCommand command2 = new SqlCommand(Query2, connection);
+                        command2.ExecuteNonQuery();
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    isStockatmCount = false;
+                }
+
+            }
+            connection.Close();
+        }
+        public void ExtendBookPeriod(int userId)
+        {
+            bool isextendCount = true;
+            while (true)
+            {
+
+                try 
+                {
+                    Console.Clear();
+                    login.title();
+                    StockAutomation();
+                    MyCart(userId);
+                    
+                
+                        Console.Write("\nExtend Your Book By Choose by BookID :");
+                        book.BookID = int.Parse(Console.ReadLine());
+
+                        string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
+                        SqlConnection connection = new SqlConnection(connectionString);
+                        connection.Open();
+
+                        string query = "UPDATE BookRent SET ExtendDate=CAST(GETDATE() as DATE),DueDate=dateadd(day,(2),getdate()) WHERE BookID= " + book.BookID + " AND userID=" + userId + "";
+                        SqlCommand cmd = new SqlCommand(query, connection);
+                        
+                        Console.WriteLine("Period Extended");
+                        cmd.ExecuteNonQuery();
+                        break;
+                        connection.Close();
+                        
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Please provide the Correct BookID ");
+                }
+            }
+        }
+    }
 }

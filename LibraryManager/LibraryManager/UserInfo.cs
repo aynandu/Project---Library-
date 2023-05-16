@@ -14,10 +14,7 @@ namespace LibraryManager
 
         public void AddNewuser()
         {
-            
-            
-            Console.Clear();
-            login.title();
+
             Console.WriteLine("Signup  ");
             Console.Write("\nEnter Your Name : ");
             user.Name = Console.ReadLine();
@@ -50,8 +47,7 @@ namespace LibraryManager
 
         public void UserDetails()
         {
-            Console.Clear();
-            login.title();
+
             //1.Address of SQL server and Database
             string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
 
@@ -76,8 +72,7 @@ namespace LibraryManager
         }
         public void DeleteUser()
         {
-            Console.Clear();
-            login.title();
+
             UserDetails();
             string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
 
@@ -133,8 +128,7 @@ namespace LibraryManager
         }
         public void ViewQueue()
         {
-            Console.Clear();
-            login.title();
+
             Console.WriteLine("Books :\n");
             string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\nandu\\Desktop\\Project\\Database\\librarymanagment\\LibraryManagement DB\\LibraryManagement DB\\LibraryDB.mdf\";Integrated Security=True;Connect Timeout=30";
             SqlConnection connection = new SqlConnection(connectionString);
